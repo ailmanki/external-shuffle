@@ -84,8 +84,6 @@ function Plugin:OnGUIScoreboardUpdateTeam(ScoreboardUpdateTeam, updateTeam)
                         playerRecord.Name
                     )
                 )
-                player["Name"]:SetColor(Color(1, 0, 0, 1))
-                player["Skill"] = "caca"
             end
         end
     end

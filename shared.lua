@@ -1,6 +1,6 @@
 local Plugin = {}
 local Shine = Shine
-Plugin.Version = "2.7"
+Plugin.Version = "2.81"
 Plugin.HasConfig = true
 Plugin.ConfigName = "ExternalShuffle.json"
 
