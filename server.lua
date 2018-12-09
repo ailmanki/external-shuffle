@@ -53,12 +53,13 @@ function Plugin:ExternalShuffle()
         -- Get the NS2IDs of available players (already in a team)
         for Client, ID in GameIDs:Iterate() do
             local TeamNumber = Client:GetControllingPlayer().teamNumber
+            local NS2ID = Client:GetUserId()
 
             if (TeamNumber == 1 or TeamNumber == 2) then
                 Index = Index + 1
-                IDs[Index] = ID
+                IDs[Index] = NS2ID
                 HiveSkills[Index] = Client:GetControllingPlayer():GetPlayerSkill()
-                Players[ID] = Client
+                Players[NS2ID] = Client
             end
         end
 
@@ -223,7 +224,7 @@ function Plugin:ReceiveVoteShuffle(Client, Data)
         Shine:Notify(Client, "PM", self.Config.ChatName, "You have already voted.")
     end
 
-    if (Votes > VotesNeeded) then
+    if (Votes >= VotesNeeded) then
         Votes = 0
         Voters = {}
         Shine.Timer.Destroy("Reset ExtShuffleVotes")
