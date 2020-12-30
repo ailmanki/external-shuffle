@@ -1,0 +1,98 @@
+name        = "[Shine] External Shufle"
+source_dir  = "source"
+output_dir  = "output"
+description = [=[Forked [url=steamcommunity.com/sharedfiles/filedetails/?id=1410401007] Tik's version[/url], to fix compatibility issues with latest NS2.
+
+This Shine plugin enables you to develop your own shuffle and ranking API externally, and to communicate to it via HTTP POST requests.
+
+Requires Shine Administration.
+
+ModId: 8B94A300
+
+These are the two endpoints that your API must provide:
+
+[h1] POST /player/scoreboard_data [/h1]
+
+POST Params:
+ns2id: int
+hiveskill: int
+
+Example request:
+[code]
+ns2id: 37745947
+hiveskill: 4000
+[/code]
+
+Example response:
+[code]
+{
+    "ns2id": 37745947,
+    "marine_skill": 3967,
+    "alien_skill": 4611
+}
+[/code]
+
+This is only used to show the skill numbers in the scoreboard and the client side average calculation on top of it, nothing else. Using the provided player hiveskill param in your own API is optional.
+Of course you can't expect to calculate skills with only those provided params, your API should use external data like NS2+/Wonitor.
+
+
+[h1] POST /shuffle [/h1]
+
+POST Params:
+ns2ids: string([ns2id_player1, ns2id_player2, ...])
+hiveskills: string([hiveskill_player1, hiveskill_player2, ...])
+
+Example request:
+[code]
+ns2ids: [1291449, 3869225, 34583831, 41727273, 44513487, 44618947, 54888603, 55422011, 57378783, 79089452, 81009203, 98383317, 139217532, 333858003, 356935348, 393094819]
+hiveskills: [11, 22, 310, 20, 50, 120, 30, 50, 70, 81, 88, 23, 24, 56, 78, 819]
+[/code]
+
+Example response:
+[code]
+{
+    "team1": [
+        1291449,
+        34583831,
+        41727273,
+        44618947,
+        79089452,
+        81009203,
+        98383317,
+        139217532
+    ],
+    "team2": [
+        3869225,
+        44513487,
+        54888603,
+        55422011,
+        57378783,
+        333858003,
+        356935348,
+        393094819
+    ],
+    "diagnostics": {
+        "RScore": "5.00",
+        "Score": "167.79",
+        "Time elapsed": "84.816483ms",
+        "Version": "1.1"
+    },
+    "success": true,
+    "msg": "Shuffled successfully."
+}
+[/code]
+All the JSON keys (team1, team2, diagnostics, success, msg) should always be returned by your API. The keys inside diagnostics are optional, you could add more or change the names of those, but always return a string as value. They show in the chat after a successful shuffle.
+
+[h1] API examples [/h1]
+NS2SUD's per team hiveskills, calculated from hiveskill and trailing per team winrate
+Python (deprecated): https://github.com/Tikzz/ns2-skill
+Golang: https://github.com/ailmanki/ns2-skill-go
+
+[h1] Plugin source code [/h1]
+https://github.com/ailmanki/external-shuffle
+
+Art by Mahadon]=]
+image       = "preview.jpg"
+tag_modtype = "Tool"
+tag_support = "Must be run on Server"
+publish_id = "8b94a300"
