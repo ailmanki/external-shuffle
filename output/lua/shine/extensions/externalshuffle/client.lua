@@ -102,17 +102,14 @@ end
 function Plugin:OnGUIScoreboardUpdate(ScoreboardUpdate, deltaTime)
     local team1Players = #ScoreboardUpdate.teams[2]["GetScores"]()
     local team2Players = #ScoreboardUpdate.teams[3]["GetScores"]()
-
+    local team1Text = ""
     if team1Players > 0 then
         team1Text = string.format("Average skill: %d", team1Skill)
-    else
-        team1Text = ""
     end
-
+    
+    local team2Text = ""
     if team2Players > 0 then
         team2Text = string.format("Average skill: %d", team2Skill)
-    else
-        team2Text = ""
     end
 
     ScoreboardUpdate.avgSkillItem:SetText(team1Text)
