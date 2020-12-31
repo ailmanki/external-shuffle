@@ -102,18 +102,28 @@ end
 function Plugin:OnGUIScoreboardUpdate(ScoreboardUpdate, deltaTime)
     local team1Players = #ScoreboardUpdate.teams[2]["GetScores"]()
     local team2Players = #ScoreboardUpdate.teams[3]["GetScores"]()
-    local team1Text = ""
+
     if team1Players > 0 then
-        team1Text = string.format("Average skill: %d", team1Skill)
+        local team1SkillGUIItem = ScoreboardUpdate.teams[2]["GUIs"]["TeamSkill"]
+        local skillTier, tierName = GetPlayerSkillTier(team1Skill, false, nil, false)
+        team1SkillGUIItem.tooltipText = string.format(Locale.ResolveString("SKILLTIER_TOOLTIP"), Locale.ResolveString(tierName), skillTier)
+        
+        local textureIndex = skillTier + 2
+        team1SkillGUIItem:SetTexturePixelCoordinates(0, textureIndex * 32, 100, (textureIndex + 1) * 32 - 1)
+        
+        team1SkillGUIItem:SetIsVisible(true)
     end
     
-    local team2Text = ""
     if team2Players > 0 then
-        team2Text = string.format("Average skill: %d", team2Skill)
+        local team2SkillGUIItem = ScoreboardUpdate.teams[3]["GUIs"]["TeamSkill"]
+        local skillTier, tierName = GetPlayerSkillTier(team2Skill, false, nil, false)
+        team2SkillGUIItem.tooltipText = string.format(Locale.ResolveString("SKILLTIER_TOOLTIP"), Locale.ResolveString(tierName), skillTier)
+        local textureIndex = skillTier + 2
+        team2SkillGUIItem:SetTexturePixelCoordinates(0, textureIndex * 32, 100, (textureIndex + 1) * 32 - 1)
+    
+        team2SkillGUIItem:SetIsVisible(true)
     end
-
-    ScoreboardUpdate.avgSkillItem:SetText(team1Text)
-    ScoreboardUpdate.avgSkillItem2:SetText(team2Text)
+    
 end
 
 function Plugin:ReceiveSkillUpdate(Data)
